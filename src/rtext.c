@@ -1263,9 +1263,8 @@ void SetTextLineSpacing(int spacing)
     textLineSpacing = spacing;
 }
 
-// Measure string width for default font
-int MeasureText(const char *text, int fontSize)
-{
+// Get text bounding box size
+Vector2 MeasureTextXY(const char* text, int fontSize) {
     Vector2 textSize = { 0.0f, 0.0f };
 
     // Check if default font has been loaded
@@ -1273,14 +1272,20 @@ int MeasureText(const char *text, int fontSize)
     {
         int defaultFontSize = 10;   // Default Font chars height in pixel
         if (fontSize < defaultFontSize) fontSize = defaultFontSize;
-        int spacing = fontSize/defaultFontSize;
+        int spacing = fontSize / defaultFontSize;
 
         textSize = MeasureTextEx(GetFontDefault(), text, (float)fontSize, (float)spacing);
     }
 
-    return (int)textSize.x;
+    return textSize;
 }
 
+// Measure string width for default font
+int MeasureText(const char* text, int fontSize)
+{
+
+    return (int)MeasureTextXY(text, fontSize).x;
+}
 // Measure string size for Font
 Vector2 MeasureTextEx(Font font, const char *text, float fontSize, float spacing)
 {
